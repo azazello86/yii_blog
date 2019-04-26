@@ -62,6 +62,11 @@ $config = [
             'database' => 0,
         ],
     ],
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
+    ],
     'params' => $params,
 ];
 

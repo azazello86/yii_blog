@@ -2,37 +2,23 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
+use Yii;
 use yii\web\IdentityInterface;
 
-class User extends ActiveRecord implements IdentityInterface
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $email
+ * @property string $password
+ * @property int $isAdmin
+ * @property string $photo
+ *
+ * @property Comment[] $comments
+ */
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-//    public $id;
-//    public $email;
-//    public $username;
-//    public $password;
-//    public $isAdmin;
-//    public $photo;
-//    public $authKey;
-//    public $accessToken;
-
-//    private static $users = [
-//        '100' => [
-//            'id' => '100',
-//            'username' => 'admin',
-//            'password' => 'admin',
-//            'authKey' => 'test100key',
-//            'accessToken' => '100-token',
-//        ],
-//        '101' => [
-//            'id' => '101',
-//            'username' => 'demo',
-//            'password' => 'demo',
-//            'authKey' => 'test101key',
-//            'accessToken' => '101-token',
-//        ],
-//    ];
-
     /**
      * {@inheritdoc}
      */
@@ -41,6 +27,40 @@ class User extends ActiveRecord implements IdentityInterface
         return 'user';
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['isAdmin'], 'integer'],
+            [['username', 'email', 'password', 'photo'], 'string', 'max' => 255],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Username',
+            'email' => 'Email',
+            'password' => 'Password',
+            'isAdmin' => 'Is Admin',
+            'photo' => 'Photo',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comment::className(), ['user_id' => 'id']);
+    }
+    
     /**
      * {@inheritdoc}
      */
